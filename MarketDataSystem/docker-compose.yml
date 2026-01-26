@@ -1,0 +1,24 @@
+services:
+  publisher:
+    build: .
+    command: stdbuf -oL ./publisher
+    ipc: host
+    network_mode: host
+    tty: true
+    
+  shm_consumer:
+    build: .
+    command: stdbuf -oL ./shm_consumer
+    ipc: host
+    network_mode: host
+    tty: true
+    depends_on:
+      - publisher
+      
+  tcp_consumer:
+    build: .
+    command: stdbuf -oL ./tcp_consumer
+    network_mode: host
+    tty: true
+    depends_on:
+      - publisher

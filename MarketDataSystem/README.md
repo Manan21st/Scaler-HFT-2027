@@ -5,6 +5,9 @@
 
 A low-latency market data distribution system demonstrating TCP networking and shared memory IPC with a lock-free ring buffer.
 
+> **Platform:** Linux only (uses POSIX APIs: `shm_open`, `mmap`, `pthread_setaffinity_np`).  
+> For Windows/macOS, use Docker (see below).
+
 ## Architecture
 
 ```
@@ -54,11 +57,11 @@ A low-latency market data distribution system demonstrating TCP networking and s
 
 ## Building
 
-### Prerequisites
-- Linux or WSL (POSIX shared memory APIs)
+### Prerequisites (Native Linux)
+- Linux (Ubuntu 20.04+ recommended)
 - C++17 compiler (GCC 8+ or Clang 8+)
 - CMake 3.16+
-- Boost.Asio
+- Boost.Asio (`sudo apt install libboost-system-dev`)
 
 ### Build Commands
 
@@ -107,6 +110,20 @@ Publishing...
 | Ring Buffer Size | `publisher.cpp` | 1024 |
 | Publish Interval | `publisher.cpp` | 100μs |
 | CPU Affinity | All source files | 0, 1, 2 |
+
+## Running with Docker (Windows/macOS)
+
+```bash
+cd MarketDataSystem
+
+# Build and run all services
+docker-compose up --build
+
+# Or run individually in separate terminals:
+docker-compose up publisher
+docker-compose up shm_consumer
+docker-compose up tcp_consumer
+```
 
 ## Cleanup
 
